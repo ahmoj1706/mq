@@ -14,6 +14,7 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      overflow: hidden;
     }
 
     .container {
@@ -33,12 +34,12 @@
       border-radius: 10px;
       cursor: pointer;
       transition: all 0.3s ease;
+      position: absolute;
     }
 
     #yes {
       background-color: #4CAF50;
       color: white;
-      position: relative;
     }
 
     #no {
@@ -72,13 +73,7 @@
       }
 
       #yes {
-        cursor: not-allowed;
-      }
-
-      /* Disable the "Yes" button on mobile */
-      #yes[disabled] {
-        background-color: #ddd;
-        cursor: not-allowed;
+        cursor: pointer;
       }
     }
 
@@ -103,19 +98,36 @@
     const noBtn = document.getElementById('no');
     const content = document.getElementById('content');
 
-    // Disable the "Yes" button on mobile
-    if (window.innerWidth <= 768) {
-      yesBtn.disabled = true;
-    }
+    // Float functionality for mobile
+    const moveButtonRandomly = () => {
+      const x = Math.random() * (window.innerWidth - yesBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - yesBtn.offsetHeight);
+      yesBtn.style.left = `${x}px`;
+      yesBtn.style.top = `${y}px`;
+    };
 
+    // Desktop: Mouseover to move button
     yesBtn.addEventListener('mouseover', () => {
       if (window.innerWidth > 768) {
-        const x = Math.random() * (window.innerWidth - yesBtn.offsetWidth);
-        const y = Math.random() * (window.innerHeight - yesBtn.offsetHeight);
-
-        yesBtn.style.left = x + 'px';
-        yesBtn.style.top = y + 'px';
+        moveButtonRandomly();
       }
+    });
+
+    // Mobile: Touchstart and touchmove to move button
+    let isTouching = false;
+    yesBtn.addEventListener('touchstart', (e) => {
+      isTouching = true;
+      moveButtonRandomly();
+    });
+
+    yesBtn.addEventListener('touchmove', (e) => {
+      if (isTouching) {
+        moveButtonRandomly();
+      }
+    });
+
+    yesBtn.addEventListener('touchend', () => {
+      isTouching = false;
     });
 
     noBtn.addEventListener('click', () => {
