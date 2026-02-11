@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Be My Val </title>
   <style>
     body {
@@ -12,10 +13,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
     }
 
     .container {
       text-align: center;
+      padding: 20px;
     }
 
     h1 {
@@ -29,12 +32,13 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     #yes {
-      position: absolute;
       background-color: #4CAF50;
       color: white;
+      position: relative;
     }
 
     #no {
@@ -47,6 +51,42 @@
       font-size: 36px;
       color: white;
       font-weight: bold;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      button {
+        font-size: 16px;
+        padding: 12px 24px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      #yes {
+        cursor: not-allowed;
+      }
+
+      /* Disable the "Yes" button on mobile */
+      #yes[disabled] {
+        background-color: #ddd;
+        cursor: not-allowed;
+      }
+    }
+
+    /* Desktop view */
+    @media (min-width: 769px) {
+      button {
+        width: auto;
+      }
     }
   </style>
 </head>
@@ -63,12 +103,19 @@
     const noBtn = document.getElementById('no');
     const content = document.getElementById('content');
 
-    yesBtn.addEventListener('mouseover', () => {
-      const x = Math.random() * (window.innerWidth - yesBtn.offsetWidth);
-      const y = Math.random() * (window.innerHeight - yesBtn.offsetHeight);
+    // Disable the "Yes" button on mobile
+    if (window.innerWidth <= 768) {
+      yesBtn.disabled = true;
+    }
 
-      yesBtn.style.left = x + 'px';
-      yesBtn.style.top = y + 'px';
+    yesBtn.addEventListener('mouseover', () => {
+      if (window.innerWidth > 768) {
+        const x = Math.random() * (window.innerWidth - yesBtn.offsetWidth);
+        const y = Math.random() * (window.innerHeight - yesBtn.offsetHeight);
+
+        yesBtn.style.left = x + 'px';
+        yesBtn.style.top = y + 'px';
+      }
     });
 
     noBtn.addEventListener('click', () => {
